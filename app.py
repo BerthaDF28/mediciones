@@ -54,11 +54,11 @@ def main():
             estado = st.session_state[f"estado_{fname}"]
 
             if estado == 0:
-                st.write("⬆️ Haz click para marcar el: **Inicio de la cola**")
+                st.write("1️⃣ Haz click para marcar el: **Inicio de la cola**")
             elif estado == 1:
-                st.write("⬆️ Haz click para marcar el: **Fin de la cola**")
+                st.write("2️⃣ Haz click para marcar el: **Fin de la cola**")
             elif estado == 2:
-                st.write("⬆️ Haz click para marcar el: **Límite de la trombosis**")
+                st.write("3️⃣ Haz click para marcar el: **Límite de la trombosis**")
             else:
                 st.success("✅ Todos los puntos ya fueron seleccionados para esta imagen.")
             
