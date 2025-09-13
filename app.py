@@ -20,51 +20,50 @@ def main():
     for uploaded_file in uploaded:
         fname = uploaded_file.name
 
-        # 🔧 CAMBIO 1: Aislamos cada imagen en un st.expander
-        with st.expander(f"📸 Imagen: {fname}", expanded=True):  
+        with st.expander(f"📸 Imagen: {fname}", expanded=True):
             img = Image.open(uploaded_file).convert("RGB")
-            ancho = img.width  # ancho para normalización
+            ancho = img.width
 
-            # 🔧 CAMBIO 2: Inicializar estado si no existe
+            # Inicializar estado
             if f"estado_{fname}" not in st.session_state:
                 st.session_state[f"estado_{fname}"] = 0
 
-        coords = streamlit_image_coordinates(img, key=f"coords_{fname}")
+            # Mostrar imagen e interactuar
+            coords = streamlit_image_coordinates(img, key=f"coords_{fname}")
 
-        # 🔧 Primero: procesar el clic y actualizar el estado
-        if coords:
-            x = coords["x"]
-            x_norm = x / ancho
+            # Procesar clic y actualizar estado
+            if coords:
+                x = coords["x"]
+                x_norm = x / ancho
+                estado = st.session_state[f"estado_{fname}"]
+
+                if estado == 0:
+                    st.session_state[f"inicio_{fname}"] = x_norm
+                    st.session_state[f"estado_{fname}"] = 1
+                    st.success(f"Inicio registrado: x = {x} (normalizado = {x_norm:.4f})")
+                elif estado == 1:
+                    st.session_state[f"fin_{fname}"] = x_norm
+                    st.session_state[f"estado_{fname}"] = 2
+                    st.success(f"Fin registrado: x = {x} (normalizado = {x_norm:.4f})")
+                elif estado == 2:
+                    st.session_state[f"trombosis_{fname}"] = x_norm
+                    st.session_state[f"estado_{fname}"] = 3
+                    st.success(f"Límite de trombosis registrado: x = {x} (normalizado = {x_norm:.4f})")
+
+            # Mostrar instrucciones actualizadas
             estado = st.session_state[f"estado_{fname}"]
 
             if estado == 0:
-                st.session_state[f"inicio_{fname}"] = x_norm
-                st.session_state[f"estado_{fname}"] = 1
-                st.success(f"Inicio registrado: x = {x} (normalizado = {x_norm:.4f})")
+                st.write("➡️ Haz click para **Inicio de la cola**")
             elif estado == 1:
-                st.session_state[f"fin_{fname}"] = x_norm
-                st.session_state[f"estado_{fname}"] = 2
-                st.success(f"Fin registrado: x = {x} (normalizado = {x_norm:.4f})")
+                st.write("➡️ Haz click para **Fin de la cola**")
             elif estado == 2:
-                st.session_state[f"trombosis_{fname}"] = x_norm
-                st.session_state[f"estado_{fname}"] = 3
-                st.success(f"Límite de trombosis registrado: x = {x} (normalizado = {x_norm:.4f})")
+                st.write("➡️ Haz click para **Límite de la trombosis**")
+            else:
+                st.success("✅ Todos los puntos ya fueron seleccionados para esta imagen.")
 
-        # 🔧 Luego: obtener el estado actualizado y mostrar la instrucción
-        estado = st.session_state[f"estado_{fname}"]
-
-        if estado == 0:
-            st.write("➡️ Haz click para **Inicio de la cola**")
-        elif estado == 1:
-            st.write("➡️ Haz click para **Fin de la cola**")
-        elif estado == 2:
-            st.write("➡️ Haz click para **Límite de la trombosis**")
-        else:
-            st.success("✅ Todos los puntos ya fueron seleccionados para esta imagen.")
- 
-
-            # 🔧 CAMBIO 5: Calcular y mostrar resultados si ya están los 3 puntos
-            if st.session_state.get(f"estado_{fname}", 0) >= 3:
+            # Mostrar resultados si ya están los 3 puntos
+            if estado >= 3:
                 inicio = st.session_state.get(f"inicio_{fname}")
                 fin = st.session_state.get(f"fin_{fname}")
                 trombosis = st.session_state.get(f"trombosis_{fname}")
@@ -99,7 +98,7 @@ def main():
                     "ratio": ratio,
                 }
 
-    # 🔧 CAMBIO 6: Mostrar resumen final si hay datos
+    # Tabla resumen final
     if resultados:
         st.markdown("## 📋 Resumen de resultados")
         st.table({
