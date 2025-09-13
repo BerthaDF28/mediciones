@@ -32,11 +32,11 @@ def main():
             estado = st.session_state[f"estado_{fname}"]
 
             if estado == 0:
-                st.write("➡️ Haz click para **Inicio de la cola**")
+                st.write("➡️ Haz click para marcar el: **Inicio de la cola**")
             elif estado == 1:
-                st.write("➡️ Haz click para **Fin de la cola**")
+                st.write("➡️ Haz click para marcar el: **Fin de la cola**")
             elif estado == 2:
-                st.write("➡️ Haz click para **Límite de la trombosis**")
+                st.write("➡️ Haz click para marcar el: **Límite de la trombosis**")
             else:
                 st.success("✅ Todos los puntos ya fueron seleccionados para esta imagen.")
                 
@@ -79,15 +79,15 @@ def main():
 
                 # Mostrar resultados
                 st.markdown("### 📊 Resultados normalizados:")
-                st.write(f"- Inicio: `{inicio:.4f}`")
-                st.write(f"- Fin: `{fin:.4f}`")
+                st.write(f"- Inicio de la cola : `{inicio:.4f}`")
+                st.write(f"- Fin de la cola: `{fin:.4f}`")
                 st.write(f"- Límite de trombosis: `{trombosis:.4f}`")
                 st.write(f"- Largo total de la cola: `{largo_total:.4f}`")
-                st.write(f"- Largo de la trombosis: `{largo_trombosis:.4f}`")
+                st.write(f"- Largo de la cola con trombosis: `{largo_trombosis:.4f}`")
                 if ratio is not None:
-                    st.write(f"- Ratio trombosis / total: `{ratio:.4f}`")
+                    st.write(f"- Porcentaje de trombosis: `{ratio:.4f}`")
                 else:
-                    st.write("- Ratio trombosis / total: ❌ No definido")
+                    st.write("- Porcentaje de trombosis: ❌ No definido")
 
                 resultados[fname] = {
                     "inicio": inicio,
