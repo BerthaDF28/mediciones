@@ -29,7 +29,7 @@ def main():
             if f"estado_{fname}" not in st.session_state:
                 st.session_state[f"estado_{fname}"] = 0
 
-           coords = streamlit_image_coordinates(img, key=f"coords_{fname}")
+        coords = streamlit_image_coordinates(img, key=f"coords_{fname}")
 
             # 🔧 Primero: procesar el clic y actualizar el estado
             if coords:
