@@ -78,7 +78,7 @@ def main():
                     ratio = largo_trombosis / largo_total
 
                 # Mostrar resultados
-                st.markdown("### 📊 Resultados normalizados:")
+                st.markdown("### 📊 Resultados de la imagen:")
                 st.write(f"- Inicio de la cola : `{inicio:.4f}`")
                 st.write(f"- Fin de la cola: `{fin:.4f}`")
                 st.write(f"- Límite de trombosis: `{trombosis:.4f}`")
@@ -104,8 +104,6 @@ def main():
         st.table({
             fname: {
                 "Porcentaje de trombosis": f"{res['ratio']:.4f}" if res["ratio"] is not None else "N/A",
-                "Largo total de la cola": f"{res['largo_total']:.4f}",
-                "Largo de la cola con trombosis": f"{res['largo_trombosis']:.4f}"
             }
             for fname, res in resultados.items()
         })
