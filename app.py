@@ -46,7 +46,6 @@ def main():
 
             # 🔧 CAMBIO 4: Mostrar coordenadas para debug
             if coords:
-                st.write("🖱 Coordenadas detectadas:", coords)
                 x = coords["x"]
                 x_norm = x / ancho  # valor normalizado entre 0 y 1
 
