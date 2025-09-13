@@ -79,9 +79,6 @@ def main():
 
                 # Mostrar resultados
                 st.markdown("### 📊 Resultados de la imagen:")
-                st.write(f"- Inicio de la cola : `{inicio:.4f}`")
-                st.write(f"- Fin de la cola: `{fin:.4f}`")
-                st.write(f"- Límite de trombosis: `{trombosis:.4f}`")
                 st.write(f"- Largo total de la cola: `{largo_total:.4f}`")
                 st.write(f"- Largo de la cola con trombosis: `{largo_trombosis:.4f}`")
                 if ratio is not None:
