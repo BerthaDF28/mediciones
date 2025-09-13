@@ -28,6 +28,18 @@ def main():
             if f"estado_{fname}" not in st.session_state:
                 st.session_state[f"estado_{fname}"] = 0
 
+            # Mostrar instrucciones actualizadas
+            estado = st.session_state[f"estado_{fname}"]
+
+            if estado == 0:
+                st.write("➡️ Haz click para **Inicio de la cola**")
+            elif estado == 1:
+                st.write("➡️ Haz click para **Fin de la cola**")
+            elif estado == 2:
+                st.write("➡️ Haz click para **Límite de la trombosis**")
+            else:
+                st.success("✅ Todos los puntos ya fueron seleccionados para esta imagen.")
+                
             # Mostrar imagen e interactuar
             coords = streamlit_image_coordinates(img, key=f"coords_{fname}")
 
@@ -49,18 +61,6 @@ def main():
                     st.session_state[f"trombosis_{fname}"] = x_norm
                     st.session_state[f"estado_{fname}"] = 3
                     st.success(f"Límite de trombosis registrado: x = {x} (normalizado = {x_norm:.4f})")
-
-            # Mostrar instrucciones actualizadas
-            estado = st.session_state[f"estado_{fname}"]
-
-            if estado == 0:
-                st.write("➡️ Haz click para **Inicio de la cola**")
-            elif estado == 1:
-                st.write("➡️ Haz click para **Fin de la cola**")
-            elif estado == 2:
-                st.write("➡️ Haz click para **Límite de la trombosis**")
-            else:
-                st.success("✅ Todos los puntos ya fueron seleccionados para esta imagen.")
 
             # Mostrar resultados si ya están los 3 puntos
             if estado >= 3:
