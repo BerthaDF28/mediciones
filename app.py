@@ -31,11 +31,11 @@ def main():
 
         coords = streamlit_image_coordinates(img, key=f"coords_{fname}")
 
-            # 🔧 Primero: procesar el clic y actualizar el estado
-            if coords:
-                x = coords["x"]
-                x_norm = x / ancho
-                estado = st.session_state[f"estado_{fname}"]
+        # 🔧 Primero: procesar el clic y actualizar el estado
+        if coords:
+            x = coords["x"]
+            x_norm = x / ancho
+            estado = st.session_state[f"estado_{fname}"]
 
             if estado == 0:
                 st.session_state[f"inicio_{fname}"] = x_norm
@@ -50,17 +50,17 @@ def main():
                 st.session_state[f"estado_{fname}"] = 3
                 st.success(f"Límite de trombosis registrado: x = {x} (normalizado = {x_norm:.4f})")
 
-            # 🔧 Luego: obtener el estado actualizado y mostrar la instrucción
-                estado = st.session_state[f"estado_{fname}"]
+        # 🔧 Luego: obtener el estado actualizado y mostrar la instrucción
+        estado = st.session_state[f"estado_{fname}"]
 
-            if estado == 0:
-                st.write("➡️ Haz click para **Inicio de la cola**")
-            elif estado == 1:
-                st.write("➡️ Haz click para **Fin de la cola**")
-            elif estado == 2:
-                st.write("➡️ Haz click para **Límite de la trombosis**")
-            else:
-                st.success("✅ Todos los puntos ya fueron seleccionados para esta imagen.")
+        if estado == 0:
+            st.write("➡️ Haz click para **Inicio de la cola**")
+        elif estado == 1:
+            st.write("➡️ Haz click para **Fin de la cola**")
+        elif estado == 2:
+            st.write("➡️ Haz click para **Límite de la trombosis**")
+        else:
+            st.success("✅ Todos los puntos ya fueron seleccionados para esta imagen.")
  
 
             # 🔧 CAMBIO 5: Calcular y mostrar resultados si ya están los 3 puntos
