@@ -29,9 +29,30 @@ def main():
             if f"estado_{fname}" not in st.session_state:
                 st.session_state[f"estado_{fname}"] = 0
 
-            estado = st.session_state[f"estado_{fname}"]
+           coords = streamlit_image_coordinates(img, key=f"coords_{fname}")
 
-            # Mostrar instrucciones según el estado actual
+            # 🔧 Primero: procesar el clic y actualizar el estado
+            if coords:
+                x = coords["x"]
+                x_norm = x / ancho
+                estado = st.session_state[f"estado_{fname}"]
+
+            if estado == 0:
+                st.session_state[f"inicio_{fname}"] = x_norm
+                st.session_state[f"estado_{fname}"] = 1
+                st.success(f"Inicio registrado: x = {x} (normalizado = {x_norm:.4f})")
+            elif estado == 1:
+                st.session_state[f"fin_{fname}"] = x_norm
+                st.session_state[f"estado_{fname}"] = 2
+                st.success(f"Fin registrado: x = {x} (normalizado = {x_norm:.4f})")
+            elif estado == 2:
+                st.session_state[f"trombosis_{fname}"] = x_norm
+                st.session_state[f"estado_{fname}"] = 3
+                st.success(f"Límite de trombosis registrado: x = {x} (normalizado = {x_norm:.4f})")
+
+            # 🔧 Luego: obtener el estado actualizado y mostrar la instrucción
+                estado = st.session_state[f"estado_{fname}"]
+
             if estado == 0:
                 st.write("➡️ Haz click para **Inicio de la cola**")
             elif estado == 1:
@@ -40,28 +61,7 @@ def main():
                 st.write("➡️ Haz click para **Límite de la trombosis**")
             else:
                 st.success("✅ Todos los puntos ya fueron seleccionados para esta imagen.")
-
-            # 🔧 CAMBIO 3: Coordinadas interactivas (con key único por imagen)
-            coords = streamlit_image_coordinates(img, key=f"coords_{fname}")
-
-            # 🔧 CAMBIO 4: Mostrar coordenadas para debug
-            if coords:
-                x = coords["x"]
-                x_norm = x / ancho  # valor normalizado entre 0 y 1
-
-                # Guardar la coordenada según el estado actual
-                if estado == 0:
-                    st.session_state[f"inicio_{fname}"] = x_norm
-                    st.session_state[f"estado_{fname}"] = 1
-                    st.success(f"Inicio registrado: x = {x} (normalizado = {x_norm:.4f})")
-                elif estado == 1:
-                    st.session_state[f"fin_{fname}"] = x_norm
-                    st.session_state[f"estado_{fname}"] = 2
-                    st.success(f"Fin registrado: x = {x} (normalizado = {x_norm:.4f})")
-                elif estado == 2:
-                    st.session_state[f"trombosis_{fname}"] = x_norm
-                    st.session_state[f"estado_{fname}"] = 3
-                    st.success(f"Límite de trombosis registrado: x = {x} (normalizado = {x_norm:.4f})")
+ 
 
             # 🔧 CAMBIO 5: Calcular y mostrar resultados si ya están los 3 puntos
             if st.session_state.get(f"estado_{fname}", 0) >= 3:
@@ -104,9 +104,9 @@ def main():
         st.markdown("## 📋 Resumen de resultados")
         st.table({
             fname: {
-                "ratio": f"{res['ratio']:.4f}" if res["ratio"] is not None else "N/A",
-                "largo_total": f"{res['largo_total']:.4f}",
-                "largo_trombosis": f"{res['largo_trombosis']:.4f}"
+                "Porcentaje de trombosis": f"{res['ratio']:.4f}" if res["ratio"] is not None else "N/A",
+                "Largo total de la cola": f"{res['largo_total']:.4f}",
+                "Largo de la cola con trombosis": f"{res['largo_trombosis']:.4f}"
             }
             for fname, res in resultados.items()
         })
