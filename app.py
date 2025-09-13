@@ -3,7 +3,7 @@ from streamlit_image_coordinates import streamlit_image_coordinates
 from PIL import Image
 
 def main():
-    st.title("Mediciones de alteraciones en colas de ratón")
+    st.title("🐭 Mediciones de alteraciones en colas de ratón")
 
     uploaded = st.file_uploader(
         "Sube múltiples imágenes (jpg, png, etc.)",
